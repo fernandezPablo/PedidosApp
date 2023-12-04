@@ -4,32 +4,28 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'tabs/pedidos-tab',
+  },
+  {
+
     path: 'tabs',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
+        path: 'pedidos-tab',
+        loadChildren: () => import('../pedidos-tab/pedidos-tab.module').then(m => m.PedidosTabPageModule)
       },
       {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'sincronizacion-tab',
+        loadChildren: () => import('../sincronizacion-tab/sincronizacion-tab.module').then(m => m.SincronizacionTabPageModule)
       },
       {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
-      },
-      {
-        path: '',
-        redirectTo: '/tabs/tab1',
-        pathMatch: 'full'
+        path: 'menu-tab',
+        loadChildren: () => import('../menu-tab/menu-tab.module').then(m => m.MenuTabPageModule)
       }
     ]
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full'
   }
 ];
 

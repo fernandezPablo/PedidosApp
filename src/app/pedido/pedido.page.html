@@ -1,0 +1,168 @@
+<style>
+
+  ion-fab-button {
+    --border-radius: 20px;
+    --box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    --color: black;
+  }
+
+  .block-list-num{
+      height: 300px;
+  }
+
+  .close-button{
+    --height: 2px;
+    padding: 0px;
+  }
+
+</style>
+
+<ion-content [fullscreen]="true" style="margin-top: 30px;">
+
+
+  <swiper-container #swiper allow-slide-next="false" allow-slide-prev="false">
+    <swiper-slide class="swiper-no-swiping">
+      <ion-grid fixed>
+
+        <ion-row>
+          <ion-col size="12">
+            <h2 class="ion-text-center">Cliente</h2>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <!-- <ion-input type="text" placeholder="Cliente..." [(ngModel)]="clienteBusqueda"></ion-input> -->
+            <ion-searchbar animated="true" placeholder="Cliente..." [(ngModel)]="clienteBusqueda" mode="ios"></ion-searchbar>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-card *ngIf="clienteSeleccionado">
+              <ion-toolbar>
+                <ion-buttons slot="end">
+                  <ion-button class="close-button" fill="clear" size="small" (click)="limpiarCliente()">
+                    <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+              <ion-card-header>
+                <ion-card-title>{{ clienteSeleccionado.nombre }}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <div>
+                  <ion-text>
+                    Dirección: {{ clienteSeleccionado.direccion }}
+                  </ion-text>
+                </div>
+                <div>
+                  <ion-text>
+                    Saldo: {{ clienteSeleccionado.saldo | currency}}
+                  </ion-text>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <cdk-virtual-scroll-viewport itemSize="10" class="block-list-num">
+              <ion-list *ngIf="clientes && clientes.length > 0; else SinClientes" lines="full">
+                <!-- <ion-item *ngFor="let cliente of clientes"> -->
+                <ion-item *cdkVirtualFor="let cliente of clientes" class="block-num" (click)="seleccionarCliente(cliente)">
+                  <ion-label>{{ cliente.nombre }}</ion-label>
+                </ion-item>
+              </ion-list>
+            </cdk-virtual-scroll-viewport>
+            <!-- <ion-infinite-scroll (ionInfinite)="cargarClientes($event)">
+              <ion-infinite-scroll-content></ion-infinite-scroll-content>
+            </ion-infinite-scroll> -->
+            <ng-template #SinClientes>
+              <ion-card color="primary">
+                <ion-card-content class="ion-text-center ion-text-uppercase">
+                  <ion-text>
+                    <h2>
+                      <ion-icon name="alert-circle-outline" slot="start">
+                      </ion-icon>
+                      Sin Clientes
+                    </h2>
+                  </ion-text>
+                </ion-card-content>
+              </ion-card>
+            </ng-template>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </swiper-slide>
+    <swiper-slide class="swiper-no-swiping">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12">
+            <h2 class="ion-text-center">Artículos</h2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </swiper-slide>
+    <swiper-slide class="swiper-no-swiping">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12">
+            <h2 class="ion-text-center">Confirmación de preventa</h2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </swiper-slide>
+  </swiper-container>
+
+
+  <!-- <ion-grid fixed>
+    <ion-row>
+      <ion-col size="6">
+      </ion-col>
+      <ion-button expand="block" fill="solid" shape="round" color="danger" (click)="cancelar()" *ngIf="!swiper.swiper.isBeginning">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Atras
+      </ion-button>        
+        <ion-button expand="block" fill="solid" shape="round" color="danger" (click)="cancelar()" *ngIf="swiper.swiper.isBeginning">
+          Cancelar
+        </ion-button>        
+      <ion-col size="6">
+        <ion-button expand="block" fill="solid" shape="round" color="success" (click)="aceptar()" *ngIf="!swiper.swiper.isEnd">
+          <ion-icon slot="end" name="arrow-forward"></ion-icon>
+          Siguiente
+        </ion-button>
+        <ion-button expand="block" fill="solid" shape="round" color="success" (click)="aceptar()" *ngIf="swiper.swiper.isEnd">
+          Aceptar
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+</ion-content>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="swiper.swiper.isBeginning">
+  <ion-fab-button (click)="cancelar()" color="danger">
+    <ion-icon name="close-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="!swiper.swiper.isBeginning">
+  <ion-fab-button (click)="cancelar()" color="danger">
+    <ion-icon name="arrow-back"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="swiper.swiper.isEnd">
+  <ion-fab-button (click)="aceptar()" color="success">
+    <ion-icon name="checkmark-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!swiper.swiper.isEnd">
+  <ion-fab-button (click)="aceptar()" color="success">
+    <ion-icon name="arrow-forward"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GUIService } from '../services/gui.service';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage {
+export class TabsPage implements OnInit{
 
-  constructor() {}
+  constructor( public guiService: GUIService) {}
+  ngOnInit(): void {
+    console.log('Tabs page load...');
+    
+  }
 
 }

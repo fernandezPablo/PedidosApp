@@ -5,6 +5,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'pedido',
+    loadChildren: () => import('./pedido/pedido.module').then( m => m.PedidoPageModule)
+  },
+  {
+    path: 'menu-tab',
+    loadChildren: () => import('./menu-tab/menu-tab.module').then( m => m.MenuTabPageModule)
   }
 ];
 @NgModule({
