@@ -13,7 +13,8 @@ import { PedidosTabPage } from './pedidos-tab.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    PedidosTabPageRoutingModule
+    PedidosTabPageRoutingModule,
+    
   ],
   declarations: [PedidosTabPage]
 })

@@ -3,8 +3,9 @@ import { GUIService } from '../services/gui.service';
 import { Router } from '@angular/router';
 import { SwiperContainer, register } from 'swiper/element/bundle';
 import { Swiper } from 'swiper';
-import { Cliente } from '../core/interfaces';
+import { Articulo, Cliente, PreventaArticulo } from '../core/interfaces';
 import { IonInfiniteScrollCustomEvent } from '@ionic/core';
+import { HttpServiceService } from '../services/http-service.service';
 
 register();
 
@@ -26,112 +27,175 @@ export class PedidoPage implements OnInit {
     {
       nombre: "Ana García",
       direccion: "Calle 123, Ciudad Ficticia",
-      saldo: 1500.50
+      zona: "9 de Julio"
     },
     {
       nombre: "Carlos Rodríguez",
       direccion: "Avenida XYZ, Pueblo Imaginario",
-      saldo: 2200.75
+      zona: "9 de Julio"
     },
     {
       nombre: "María López",
       direccion: "Carrera 456, Villa de los Sueños",
-      saldo: 1800.20
+      zona: "Alderetes"
     },
     {
       nombre: "Juan Martínez",
       direccion: "Camino ABC, Ciudad de la Fantasía",
-      saldo: 3000.00
+      zona: "Bella Vista"
     },
     {
       nombre: "Laura Pérez",
       direccion: "Plaza 789, Pueblo de las Maravillas",
-      saldo: 2500.30
+      zona: "Concepción"
     },
     {
       nombre: "Miguel Sánchez",
       direccion: "Pasaje Mágico, Ciudad de las Ilusiones",
-      saldo: 1900.60
+      zona: "Tafi Viejo"
     },
     {
       nombre: "Isabel Vargas",
       direccion: "Rincón Encantado, Pueblo Encantador",
-      saldo: 2800.45
+      zona: "Lomas de Tafí"
     },
     {
       nombre: "Roberto Ramírez",
       direccion: "Vereda de los Sueños, Villa Soñadora",
-      saldo: 2100.90
+      zona: "Barrio Oeste"
     },
     {
       nombre: "Sofía Torres",
       direccion: "Sendero de las Mariposas, Ciudad Imaginada",
-      saldo: 3200.15
+      zona: "La Bombilla"
     },
     {
       nombre: "Javier Mendoza",
       direccion: "Callejón de las Estrellas, Pueblo Estelar",
-      saldo: 2700.25
+      zona: "Ciudadela"
     },
     {
       nombre: "Elena Guzmán",
       direccion: "Calle Principal, Villa Alegre",
-      saldo: 2300.70
+      zona: "Barrio Norte"
     },
     {
       nombre: "Adrián Duarte",
       direccion: "Avenida Colorida, Ciudad Vibrante",
-      saldo: 2000.80
+      zona: "Centro"
     },
     {
       nombre: "Patricia Navarro",
       direccion: "Paseo Feliz, Pueblo Feliz",
-      saldo: 2900.35
+      zona: "Sur"
     },
     {
       nombre: "Héctor Ríos",
       direccion: "Ruta Encantada, Ciudad Encantadora",
-      saldo: 2600.40
+      zona: "Este"
     },
     {
       nombre: "Carmen Silva",
       direccion: "Callejuela Encantadora, Villa Encantada",
-      saldo: 3400.55
+      zona: "Lastenia"
     },
     {
       nombre: "Ricardo Fuentes",
       direccion: "Avenida del Arcoíris, Pueblo Arcoíris",
-      saldo: 3100.10
+      zona: "Banda del Río Salí"
     },
     {
       nombre: "Gabriela Jiménez",
       direccion: "Calle de las Flores, Ciudad Floral",
-      saldo: 2400.95
+      zona: "Abasto"
     },
     {
       nombre: "Fernando Mora",
       direccion: "Avenida Soleada, Villa Soleada",
-      saldo: 3700.75
+      zona: "Parque 9 de Julio"
     },
     {
       nombre: "Natalia Herrera",
       direccion: "Rincón del Bosque, Ciudad Boscosa",
-      saldo: 2800.20
+      zona: "Yerba Buena"
     },
     {
       nombre: "Diego Cordero",
       direccion: "Calle del Silencio, Pueblo Silencioso",
-      saldo: 2600.30
+      zona: "Tafí del Valle"
     }
   ];
-  
   public get clientes() : Cliente[] {
     return this._clientes.filter( (cliente, index) => cliente.nombre?.includes(this.clienteBusqueda) );
   }
+
+  articuloBusqueda: string = '';
+  _preventasArticulos: PreventaArticulo[] = [
+      {
+        articulo: { 
+          codigoarticu: 1234,
+          articu: 'Coca Cola x 3L',
+          preciovental1: 1000,
+          present: 10
+        },
+        cantid: 100,
+        fardos: 2,
+        subtotal: 1000
+      },
+      {
+        articulo: { 
+          codigoarticu: 2124,
+          articu: 'Fernet Branca x 1L',
+          preciovental1: 3000,
+          present: 20
+         },
+        cantid: 3,
+        fardos: 4,
+        subtotal: 3000
+      },
+      {
+        articulo: { 
+          codigoarticu: 2124,
+          articu: 'Bolsa de Hielo x 5KG',
+          preciovental1: 700,
+          present: 20
+         },
+        cantid: 3000,
+        fardos: 4,
+        subtotal: 200
+      },
+      {
+        articulo: { 
+          codigoarticu: 2124,
+          articu: 'Gaseosa Secco x 2L',
+          preciovental1: 300,
+          present: 6
+         },
+        cantid: 3,
+        fardos: 4,
+        subtotal: 3000
+      },
+      {
+        articulo: { 
+          codigoarticu: 2124,
+          articu: 'Vino toro x 1L',
+          preciovental1: 1200,
+          present: 10
+         },
+        cantid: 3000,
+        fardos: 4,
+        subtotal: 200
+      },
+  ];
+  public get preventasArticulos() : PreventaArticulo[] {
+    return this._preventasArticulos.filter( (preventaArticulo, index) => preventaArticulo.articulo?.articu?.toUpperCase().includes(this.articuloBusqueda.toUpperCase()) ||  this.articuloBusqueda === '');
+  }
+  
   
   constructor( 
     private guiService: GUIService,
-    private router: Router) {
+    private router: Router,
+    private httpService: HttpServiceService) {
       // this.swiper = new Swiper('.swiper', {
         //   noSwiping: false,
         //   noSwipingClass: 'swiper-no-swiping',
@@ -140,8 +204,16 @@ export class PedidoPage implements OnInit {
         // });
       }
       
-      ngOnInit() {
+      async ngOnInit() {
         this.guiService.ShowTabBar.set(false); 
+
+        try {
+          const resp = await this.httpService.getActors();
+          console.log('Actores: ', resp);
+        } catch (error: any) {
+          console.error('Error al consultar actores: ', error.message);
+          console.error('Error al consultar actores (Object error): ', error);
+        }
       }
     
       cargarClientes($event: IonInfiniteScrollCustomEvent<void>) {
@@ -185,5 +257,7 @@ export class PedidoPage implements OnInit {
       limpiarCliente() {
         this.clienteSeleccionado = undefined;
       }
+
+
 
 }

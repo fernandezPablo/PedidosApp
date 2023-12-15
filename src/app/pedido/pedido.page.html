@@ -1,17 +1,33 @@
 <style>
 
   ion-fab-button {
-    --border-radius: 20px;
+    --border-radius: 50px;
     --box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     --color: black;
   }
 
   .block-list-num{
-      height: 300px;
+      height: 60vh;
   }
 
   .close-button{
     --height: 2px;
+    padding: 0px;
+  }
+
+  ion-buttons{
+    height: 0.5rem;
+  }
+
+  .card-articulo{
+    width: 100%;
+  }
+  
+  .card-content-md{
+    padding: 1px; 
+  }
+
+  .grid-fixed{
     padding: 0px;
   }
 
@@ -37,9 +53,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="clienteSeleccionado">
           <ion-col size="12">
-            <ion-card *ngIf="clienteSeleccionado">
+            <ion-card>
               <ion-toolbar>
                 <ion-buttons slot="end">
                   <ion-button class="close-button" fill="clear" size="small" (click)="limpiarCliente()">
@@ -48,17 +64,17 @@
                 </ion-buttons>
               </ion-toolbar>
               <ion-card-header>
-                <ion-card-title>{{ clienteSeleccionado.nombre }}</ion-card-title>
+                <ion-card-title style="font-size: 1.8rem;">{{ clienteSeleccionado.nombre }}</ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 <div>
-                  <ion-text>
-                    Dirección: {{ clienteSeleccionado.direccion }}
+                  <ion-text style="font-size: 1.3rem;">
+                    Zona: {{ clienteSeleccionado.zona }}
                   </ion-text>
                 </div>
                 <div>
-                  <ion-text>
-                    Saldo: {{ clienteSeleccionado.saldo | currency}}
+                  <ion-text style="font-size: 1.3rem;">
+                    Dirección: {{ clienteSeleccionado.direccion }}
                   </ion-text>
                 </div>
               </ion-card-content>
@@ -66,7 +82,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="!clienteSeleccionado">
           <ion-col size="12">
             <cdk-virtual-scroll-viewport itemSize="10" class="block-list-num">
               <ion-list *ngIf="clientes && clientes.length > 0; else SinClientes" lines="full">
@@ -99,11 +115,70 @@
     </swiper-slide>
     <swiper-slide class="swiper-no-swiping">
       <ion-grid fixed>
+
         <ion-row>
           <ion-col size="12">
             <h2 class="ion-text-center">Artículos</h2>
           </ion-col>
         </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <cdk-virtual-scroll-viewport itemSize="10" class="block-list-num">
+              <ion-list *ngIf="preventasArticulos && preventasArticulos.length > 0; else SinDetalle" lines="full">
+                <!-- <ion-item *ngFor="let cliente of clientes"> -->
+                <ion-item *cdkVirtualFor="let preventaArticulo of preventasArticulos" class="block-num">
+                  <ion-card class="card-articulo">
+                    <ion-card-content>
+                      <ion-grid fixed>
+                        <ion-row>
+                          <ion-col size="2">
+                            <ion-label> {{ preventaArticulo.cantid }} x </ion-label>                            
+                          </ion-col>
+                          <ion-col size="7">
+                            <ion-label> {{ preventaArticulo.articulo?.articu }} </ion-label>
+                          </ion-col>
+                          <ion-col size="3" class="ion-text-right">
+                            <strong> {{ preventaArticulo.subtotal | currency }} </strong>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="9">
+                            <ion-label> Fardos: {{ preventaArticulo.fardos }} </ion-label>
+                          </ion-col>
+                          <ion-col size="3" class="ion-text-right">
+                            <ion-buttons>
+                              <ion-button color="danger" fill="solid" shape="round" size="small">
+                                <ion-icon slot="icon-only" name="trash" size="small"></ion-icon>
+                              </ion-button>
+                              <ion-button color="success" fill="solid" shape="round" size="small">
+                                <ion-icon slot="icon-only" name="pencil" size="small"></ion-icon>
+                              </ion-button>
+                            </ion-buttons>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-item>
+              </ion-list>
+            </cdk-virtual-scroll-viewport>
+            <ng-template #SinDetalle>
+              <ion-card color="primary">
+                <ion-card-content class="ion-text-center ion-text-uppercase">
+                  <ion-text>
+                    <h2>
+                      <ion-icon name="alert-circle-outline" slot="start">
+                      </ion-icon>
+                      Sin Artículos
+                    </h2>
+                  </ion-text>
+                </ion-card-content>
+              </ion-card>
+            </ng-template>
+          </ion-col>
+        </ion-row>
+
       </ion-grid>
     </swiper-slide>
     <swiper-slide class="swiper-no-swiping">
